@@ -5,7 +5,7 @@ void CubicSplie(vector<pair<int, int>> _vector, double** answer, int n)
   int* h = new int[n];
   h[0] = 0;
   for (int i = 1; i < n; ++i)
-      h[i] = _vector[i].first - _vector[i - 1].first;
+      h[i] = _vector[i].first - _vector[i - 1].first;  // x[i] - x[i - 1]
 
   double* right = new double[n - 2];
   int** left = new int*[n - 2];
@@ -19,8 +19,8 @@ void CubicSplie(vector<pair<int, int>> _vector, double** answer, int n)
 
   for (int i = 1; i < n - 1; ++i)
   {
-    double one = ((double)_vector[i + 1].second - (double)_vector[i].second) / (double)h[i + 1];
-    double two = ((double)_vector[i].second - (double)_vector[i - 1].second) / (double)h[i];
+    double one = ((double)_vector[i + 1].second - (double)_vector[i].second) / (double)h[i + 1];  
+    double two = ((double)_vector[i].second - (double)_vector[i - 1].second) / (double)h[i]; 
     right[i - 1] = 3. * (one - two);
 
     left[i - 1][i - 1] = h[i];
@@ -28,13 +28,13 @@ void CubicSplie(vector<pair<int, int>> _vector, double** answer, int n)
     left[i - 1][i + 1] = h[i + 1];
   }
 
-  double* solutn = new double[n - 2];
-  Sweep(left, right, solutn, n);
+  double* solution = new double[n - 2];
+  Sweep(left, right, solution, n);
 
   double* C = new double[n + 1];
   C[1] = C[n] = 0;
   for (int i = 2; i < n; ++i)
-      C[i] = solutn[i - 2];
+      C[i] = solution[i - 2];
 
   for (int i = 1; i < n; ++i)
   {
@@ -43,7 +43,7 @@ void CubicSplie(vector<pair<int, int>> _vector, double** answer, int n)
     answer[i][0] = _vector[i - 1].second;
     answer[i][1] = one - two;
     answer[i][2] = C[i];
-    answer[i][3] = (C[i + 1] - C[i]) / (3. * h[i]);
+    answer[i][3] = (C[i + 1] - C[i]) / (3. * h[i]);   // d[i]
   }
 
   for (int i = 0; i < n - 2; ++i)
@@ -51,7 +51,7 @@ void CubicSplie(vector<pair<int, int>> _vector, double** answer, int n)
   delete[] right;
   delete[] left;
   delete[] h;
-  delete[] solutn;
+  delete[] solution;
   delete[] C;
 }
 
@@ -65,7 +65,8 @@ void Sweep(int** left, double* B, double* result, int n)
   for (int i = 0; i < size; ++i)
   {
     A[i] = new double[size];
-    for (int j = 0; j < size; ++j) A[i][j] = left[i][j + 1];
+    for (int j = 0; j < size; ++j) 
+      A[i][j] = left[i][j + 1];
   }
 
   double y = (double)A[0][0];
@@ -82,7 +83,7 @@ void Sweep(int** left, double* B, double* result, int n)
   double two = (A[size - 1][size - 1] + A[size - 1][size - 2] * a[size - 2]);
   result[n - 3] = one / two;
   for (int i = size - 2; i >= 0; i--)
-      result[i] = a[i] * result[i + 1] + b[i];
+    result[i] = a[i] * result[i + 1] + b[i];
 
   for (int i = 0; i < size; ++i)
       delete[] A[i];
