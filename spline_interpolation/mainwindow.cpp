@@ -18,6 +18,8 @@ using namespace std;
 IS is;
 
 int count_points = 0;
+int num = 0;
+int check_point2 = 0;
 int flag = 0, input = -1;
 double _x_le, _y_le;
 
@@ -142,25 +144,35 @@ void MainWindow::on_doubleSpinBox_2_valueChanged(double arg1)
 
 void MainWindow::on_pushButton_5_clicked() // show points
 {
+    // 2 ЛАБА !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // меньше 12*12
+    // больше 2*2
+    // 2 ЛАБА !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    // Гаусс, Крамер, Гейгеля, верхней апсации, простейшей итерации + 2 своих,
+
     QVector<double> _x(count_points + 1), _y(count_points + 1);
-    QPen pen;
+    QPen pen, pen_zero;
     pen.setColor((qSin(2+1.2)*80+80, qSin(0.6+0)*80+80, qSin(0.6+1.5)*80+80));
+    pen_zero.setColor(Qt::red);
 
     {
         for (auto &point : is)
         {
            _x.push_back(point.second.x);
            _y.push_back(point.second.y);
-
            ui->widget->addGraph();
            ui->widget->graph()->setPen(pen);
            ui->widget->graph()->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsNone);
            ui->widget->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
            ui->widget->graph()->setData(_x, _y);
+           QPen qAxisPen;
+           qAxisPen.setWidth(1.);
+           ui->widget->xAxis->grid()->setZeroLinePen(qAxisPen);
+           ui->widget->yAxis->grid()->setZeroLinePen(qAxisPen);
            ui->widget->xAxis->setLabel("y");
            ui->widget->yAxis->setLabel("x");
            ui->widget->xAxis->setRange(-100, 100);
-           ui->widget->yAxis->setRange(-100, 150);
+           ui->widget->yAxis->setRange(-100, 100);
            ui->widget->replot();
         }
     }
@@ -180,8 +192,6 @@ void MainWindow::on_pushButton_3_clicked() // show primitive
        _x_a.push_front(point.second.x);
        _y_a.push_front(point.second.y);
     }
-    //qSort(_x_a.begin(), _x_a.end());
-
     ui->widget->graph()->setPen(pen);
     ui->widget->graph()->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
     ui->widget->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
@@ -189,7 +199,7 @@ void MainWindow::on_pushButton_3_clicked() // show primitive
     ui->widget->xAxis->setLabel("y");
     ui->widget->yAxis->setLabel("x");
     ui->widget->xAxis->setRange(-100, 100);
-    ui->widget->yAxis->setRange(-100, 150);
+    ui->widget->yAxis->setRange(-100, 100);
     ui->widget->replot();
 }
 
@@ -202,14 +212,17 @@ void MainWindow::on_checkBox_2_stateChanged(int arg1)
         ui->widget->addGraph();
     }
     if (ui->doubleSpinBox_3->value() > 0)
+    {
         n = ui->doubleSpinBox_3->value();
+        num++;
+    }
     else
         n = 8;
     Point point[n];
 
     for (int i = 0; i < n; i++)
     {
-        point[i] = Point(i + pow(-1, i) * 3 - pow(-2, i) - 10 * i - 8, i + pow(-1, i) * 2 + 5, i);
+        point[i] = Point(i + pow(-1, i) * 3 - pow(-2, i) - 10 * i - 8, i + pow(-1, i) * 2 + pow(-1, i) * 3, i);
     }
 
     for (int i = 0; i < n; i++)
@@ -217,6 +230,7 @@ void MainWindow::on_checkBox_2_stateChanged(int arg1)
         is[i] = point[i];
         count_points++;
     }
+    check_point2++;
 }
 
 void MainWindow::on_pushButton_6_clicked() // show spline
@@ -279,7 +293,15 @@ void MainWindow::on_pushButton_6_clicked() // show spline
 
     QPen pen;
     pen.setColor((qSin(2+1.2)*80+80, qSin(0.6+0)*80+80, qSin(0.6+1.5)*80+80));
-
+//    QPen qAxisPen;
+//    qAxisPen.setWidth(1.);
+//    ui->widget->update();
+//    ui->widget->addGraph();
+//    ui->widget->clearPlottables();
+//    ui->widget->addGraph();
+    ui->widget->update();
+//    ui->widget->xAxis->grid()->setZeroLinePen(qAxisPen);
+//    ui->widget->yAxis->grid()->setZeroLinePen(qAxisPen);
     ui->widget->graph()->setPen(pen);
     ui->widget->graph()->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
     ui->widget->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
@@ -287,6 +309,20 @@ void MainWindow::on_pushButton_6_clicked() // show spline
     ui->widget->xAxis->setLabel("y");
     ui->widget->yAxis->setLabel("x");
     ui->widget->xAxis->setRange(-100, 100);
-    ui->widget->yAxis->setRange(-100, 150);
+    ui->widget->yAxis->setRange(-100, 100);
     ui->widget->replot();
 }
+
+void MainWindow::on_pushButton_2_clicked()
+{
+    count_points = 0;
+    num = 0;
+    flag = 0; input = -1;
+    _x_le = 0; _y_le = 0;
+    is.clear();
+
+    ui->widget->clearPlottables();
+    ui->widget->addGraph();
+    ui->widget->replot();
+}
+
