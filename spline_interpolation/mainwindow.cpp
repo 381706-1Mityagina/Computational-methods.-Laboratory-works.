@@ -11,6 +11,7 @@
 #include <QDebug>
 #include <QInputDialog>
 #include <iostream>
+#include <random>
 #include "cubic_spline.h"
 
 using namespace std;
@@ -117,11 +118,7 @@ void MainWindow::on_pushButton_clicked()
 
 void MainWindow::on_pushButton_4_clicked()
 {
-    //if (flag == 2)
-    {
-        add();
-    //  flag = 3;
-    }
+    add();
 }
 
 void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
@@ -129,7 +126,6 @@ void MainWindow::on_doubleSpinBox_valueChanged(double arg1)
      if (input == 0)
      {
          _x_le = arg1;
-         //flag++;
      }
 }
 
@@ -138,7 +134,6 @@ void MainWindow::on_doubleSpinBox_2_valueChanged(double arg1)
     if (input == 0)
     {
         _y_le = arg1;
-        //flag++;
     }
 }
 
@@ -153,7 +148,7 @@ void MainWindow::on_pushButton_5_clicked() // show points
     QVector<double> _x(count_points + 1), _y(count_points + 1);
     QPen pen, pen_zero;
     pen.setColor((qSin(2+1.2)*80+80, qSin(0.6+0)*80+80, qSin(0.6+1.5)*80+80));
-    pen_zero.setColor(Qt::red);
+    pen_zero.setColor(Qt::blue);
 
     {
         for (auto &point : is)
@@ -161,10 +156,10 @@ void MainWindow::on_pushButton_5_clicked() // show points
            _x.push_back(point.second.x);
            _y.push_back(point.second.y);
            ui->widget->addGraph();
-           ui->widget->graph()->setPen(pen);
-           ui->widget->graph()->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsNone);
-           ui->widget->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
-           ui->widget->graph()->setData(_x, _y);
+           ui->widget->graph(0)->setPen(pen);
+           ui->widget->graph(0)->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsNone);
+           ui->widget->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 5));
+           ui->widget->graph(0)->setData(_x, _y);
            QPen qAxisPen;
            qAxisPen.setWidth(1.);
            ui->widget->xAxis->grid()->setZeroLinePen(qAxisPen);
@@ -184,7 +179,7 @@ void MainWindow::on_pushButton_3_clicked() // show primitive
     vector<point_cl> _points(count_points + 1);
 
     QPen pen;
-    pen.setColor((qSin(2+1.2)*80+80, qSin(0.6+0)*80+80, qSin(0.6+1.5)*80+80));
+    pen.setColor(Qt::blue);
 
     for (auto &point : is)
     {
@@ -192,10 +187,10 @@ void MainWindow::on_pushButton_3_clicked() // show primitive
        _x_a.push_front(point.second.x);
        _y_a.push_front(point.second.y);
     }
-    ui->widget->graph()->setPen(pen);
-    ui->widget->graph()->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
-    ui->widget->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
-    ui->widget->graph()->setData(_x_a, _y_a);
+    ui->widget->graph(0)->setPen(pen);
+    ui->widget->graph(0)->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
+    ui->widget->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 2));
+    ui->widget->graph(0)->setData(_x_a, _y_a);
     ui->widget->xAxis->setLabel("y");
     ui->widget->yAxis->setLabel("x");
     ui->widget->xAxis->setRange(-100, 100);
@@ -206,11 +201,7 @@ void MainWindow::on_pushButton_3_clicked() // show primitive
 void MainWindow::on_checkBox_2_stateChanged(int arg1)
 {
     int n;
-    if (input == 0)
-    {
-        input = 1;
-        ui->widget->addGraph();
-    }
+    ui->widget->addGraph();
     if (ui->doubleSpinBox_3->value() > 0)
     {
         n = ui->doubleSpinBox_3->value();
@@ -222,7 +213,7 @@ void MainWindow::on_checkBox_2_stateChanged(int arg1)
 
     for (int i = 0; i < n; i++)
     {
-        point[i] = Point(i + pow(-1, i) * 3 - pow(-2, i) - 10 * i - 8, i + pow(-1, i) * 2 + pow(-1, i) * 3, i);
+        point[i] = Point(i + pow(-1, i) * 3 - pow(-2, i) - 10 * i + rand()%(40) + i, i + i + pow(-1, i) * 2 + pow(-1, i) * 3 + rand()%(30), i);
     }
 
     for (int i = 0; i < n; i++)
@@ -230,7 +221,6 @@ void MainWindow::on_checkBox_2_stateChanged(int arg1)
         is[i] = point[i];
         count_points++;
     }
-    check_point2++;
 }
 
 void MainWindow::on_pushButton_6_clicked() // show spline
@@ -286,26 +276,20 @@ void MainWindow::on_pushButton_6_clicked() // show spline
         x_new.push_back(X[k]);
 
         k++;
-        }
       }
+     }
       max += 3;
       min -= 3;
 
     QPen pen;
-    pen.setColor((qSin(2+1.2)*80+80, qSin(0.6+0)*80+80, qSin(0.6+1.5)*80+80));
-//    QPen qAxisPen;
-//    qAxisPen.setWidth(1.);
-//    ui->widget->update();
-//    ui->widget->addGraph();
-//    ui->widget->clearPlottables();
-//    ui->widget->addGraph();
-    ui->widget->update();
-//    ui->widget->xAxis->grid()->setZeroLinePen(qAxisPen);
-//    ui->widget->yAxis->grid()->setZeroLinePen(qAxisPen);
-    ui->widget->graph()->setPen(pen);
-    ui->widget->graph()->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
-    ui->widget->graph()->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
-    ui->widget->graph()->setData(x_new, f);
+    pen.setColor(Qt::blue);
+    ui->widget->clearPlottables();
+    ui->widget->addGraph();
+    ui->widget->graph(0)->setPen(pen);
+    ui->widget->graph(0)->setLineStyle((QCPGraph::LineStyle)QCPGraph::lsLine);
+    ui->widget->graph(0)->setScatterStyle(QCPScatterStyle(QCPScatterStyle::ssCircle, 1));
+    ui->widget->graph(0)->setData(x_new, f);
+    ui->widget->graph(0)->addData(x_new, f);
     ui->widget->xAxis->setLabel("y");
     ui->widget->yAxis->setLabel("x");
     ui->widget->xAxis->setRange(-100, 100);
@@ -325,4 +309,3 @@ void MainWindow::on_pushButton_2_clicked()
     ui->widget->addGraph();
     ui->widget->replot();
 }
-
