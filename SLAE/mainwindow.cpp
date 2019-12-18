@@ -10,6 +10,7 @@
 #include "Gauss_Seidel.h"
 #include "Simple_iterations.h"
 #include "methods.cpp"
+#include "LU_decomposition.h"
 
 int method = -1;
 
@@ -52,8 +53,8 @@ void MainWindow::on_pushButton_clicked()
     Form->setWindowTitle("Справка");
     Form->setAttribute(Qt::WA_DeleteOnClose, true);
 
-    QPixmap pix("/home/dariamityagina/SLAE_lab2/src/all.jpg");
-    Form->resize(865, 10400);
+    QPixmap pix("/home/dariamityagina/SLAE_lab2/src/seven.jpg");
+    Form->resize(865, 15085);
     QPalette palette;
     palette.setBrush(QPalette::Background, pix);
     Form->setPalette(palette);
@@ -178,8 +179,8 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("Время : " + QString::number(dt) + "ms\n");
-            ui->plainTextEdit->setPlainText("Метод Гаусса\nРешение : \n" + solution_out);
+            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit->setPlainText("Метод Гаусса\n\nРешение : \n" + solution_out);
         }
             break;
         case 2:
@@ -195,8 +196,8 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("Время : " + QString::number(dt) + "ms\n");
-            ui->plainTextEdit->setPlainText("Метод Крамера\nРешение : \n" + solution_out);
+            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit->setPlainText("Метод Крамера\n\nРешение : \n" + solution_out);
         }
             break;
         case 3:
@@ -211,12 +212,14 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("Время : " + QString::number(dt) + "ms\n");
-            ui->plainTextEdit->setPlainText("Метод Зейделя\nРешение : \n" + solution_out);
+            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit->setPlainText("Метод Зейделя\n\nРешение : \n" + solution_out);
         }
             break;
         case 4:
+        {
 
+        }
             break;
         case 5:
         {
@@ -230,12 +233,25 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("Время : " + QString::number(dt) + "ms\n");
-            ui->plainTextEdit->setPlainText("Метод простой итерации\nРешение : \n" + solution_out);
+            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit->setPlainText("Метод простой итерации\n\nРешение : \n" + solution_out);
         }
             break;
         case 6:
-
+        {
+            solution.clear();
+            t1 = clock();
+            solution = SLAE::Solve_LU(matrix, right_part, n);
+            t2 = clock();
+            dt = t2 - t1;
+            QString solution_out = "";
+            for (int i = 0; i < n; i++)
+            {
+                solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
+            }
+            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit->setPlainText("LU-декомпозиция\n\nРешение : \n" + solution_out);
+        }
             break;
         case 7:
 

@@ -1485,7 +1485,7 @@
      </palette>
     </property>
     <property name="text">
-     <string>Свой 1</string>
+     <string>LU-декомпозиция</string>
     </property>
    </widget>
    <widget class="QCheckBox" name="checkBox_7">
@@ -1697,7 +1697,7 @@
      </palette>
     </property>
     <property name="text">
-     <string>Свой 2</string>
+     <string>Многосеточный метод</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
