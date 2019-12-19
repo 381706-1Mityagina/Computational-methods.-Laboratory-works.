@@ -7,13 +7,6 @@ namespace SLAE
     void LUDecompose(std::vector<std::vector<double>> matrix, std::vector<std::vector<double>> &L, std::vector<std::vector<double>> &U, int n)
     {
         int length = n;
-//        L = std::vector<std::vector<double>>(length);
-//        U = std::vector<std::vector<double>>(length);
-//        for (int i = 0; i < length; i++)
-//        {
-//            L[i] = std::vector<double>(length, 0);
-//            U[i] = std::vector<double>(length, 0);
-//        }
 
         for (int j = 0; j < length; j++)
         {
@@ -50,7 +43,6 @@ namespace SLAE
     std::vector<double> Solve_LU(std::vector<std::vector<double>> matrix, std::vector<double> b, int n)
     {
         int length = n;
-        // LUDecompose(matrix, std::vector<std::vector<double>> L, std::vector<std::vector<double>> U, int n);
         std::vector<std::vector<double>> L = std::vector<std::vector<double>>(length);
         std::vector<std::vector<double>> U = std::vector<std::vector<double>>(length);
         for (int i = 0; i < length; i++)

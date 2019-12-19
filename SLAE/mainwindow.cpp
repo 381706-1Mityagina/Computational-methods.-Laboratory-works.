@@ -11,6 +11,8 @@
 #include "Simple_iterations.h"
 #include "methods.cpp"
 #include "LU_decomposition.h"
+#include "yakobi.h"
+#include "successive_over_relaxation.h"
 
 int method = -1;
 
@@ -52,13 +54,13 @@ void MainWindow::on_pushButton_clicked()
     QWidget* Form = new QWidget;
     Form->setWindowTitle("Справка");
     Form->setAttribute(Qt::WA_DeleteOnClose, true);
-
-    QPixmap pix("/home/dariamityagina/SLAE_lab2/src/seven.jpg");
-    Form->resize(865, 15085);
+    QPixmap pix("/home/dariamityagina/SLAE_lab2/src/all.jpg");
+    Form->resize(865, 16800);
     QPalette palette;
     palette.setBrush(QPalette::Background, pix);
     Form->setPalette(palette);
     QScrollArea *tagCloudScrollArea = new QScrollArea;
+    tagCloudScrollArea->setWindowTitle("Теория");
     tagCloudScrollArea->setWidget(Form);
     tagCloudScrollArea->resize(865, 500);
     tagCloudScrollArea->show();
@@ -179,7 +181,7 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit_2->setPlainText(QString::number(dt) + " ms\n");
             ui->plainTextEdit->setPlainText("Метод Гаусса\n\nРешение : \n" + solution_out);
         }
             break;
@@ -196,7 +198,7 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit_2->setPlainText(QString::number(dt) + " ms\n");
             ui->plainTextEdit->setPlainText("Метод Крамера\n\nРешение : \n" + solution_out);
         }
             break;
@@ -212,13 +214,24 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit_2->setPlainText(QString::number(dt) + " ms\n");
             ui->plainTextEdit->setPlainText("Метод Зейделя\n\nРешение : \n" + solution_out);
         }
             break;
         case 4:
         {
-
+            solution.clear();
+            t1 = clock();
+            solution = SLAE::Solve_sor(matrix, right_part, 600, 0.00001, 1.0);
+            t2 = clock();
+            dt = t2 - t1;
+            QString solution_out = "";
+            for (int i = 0; i < n; i++)
+            {
+                solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
+            }
+            ui->plainTextEdit_2->setPlainText(QString::number(dt) + " ms\n");
+            ui->plainTextEdit->setPlainText("Метод верхней релаксации\n\nРешение : \n" + solution_out);
         }
             break;
         case 5:
@@ -233,7 +246,7 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit_2->setPlainText(QString::number(dt) + " ms\n");
             ui->plainTextEdit->setPlainText("Метод простой итерации\n\nРешение : \n" + solution_out);
         }
             break;
@@ -249,12 +262,25 @@ void MainWindow::on_pushButton_2_clicked()
             {
                 solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
             }
-            solution_out.push_back("\nВремя : " + QString::number(dt) + " ms\n");
+            ui->plainTextEdit_2->setPlainText(QString::number(dt) + " ms\n");
             ui->plainTextEdit->setPlainText("LU-декомпозиция\n\nРешение : \n" + solution_out);
         }
             break;
         case 7:
-
+        {
+            solution.clear();
+            t1 = clock();
+            solution = SLAE::Solve_Yakobi(matrix, right_part, n, 0.0001);
+            t2 = clock();
+            dt = t2 - t1;
+            QString solution_out = "";
+            for (int i = 0; i < n; i++)
+            {
+                solution_out.push_back("x[" + QString::number(i) + "] = " + QString::number(solution[i]) + "\n");
+            }
+            ui->plainTextEdit_2->setPlainText(QString::number(dt) + " ms\n");
+            ui->plainTextEdit->setPlainText("Метод Якоби\n\nРешение : \n" + solution_out);
+        }
             break;
         default:
         {

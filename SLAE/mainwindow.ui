@@ -1697,7 +1697,7 @@
      </palette>
     </property>
     <property name="text">
-     <string>Многосеточный метод</string>
+     <string>Якоби</string>
     </property>
    </widget>
    <widget class="QLabel" name="label">
@@ -2779,7 +2779,7 @@
       <x>590</x>
       <y>100</y>
       <width>231</width>
-      <height>121</height>
+      <height>171</height>
      </rect>
     </property>
     <property name="palette">
@@ -3198,9 +3198,9 @@
     <property name="geometry">
      <rect>
       <x>590</x>
-      <y>260</y>
+      <y>320</y>
       <width>231</width>
-      <height>111</height>
+      <height>51</height>
      </rect>
     </property>
     <property name="palette">
@@ -3406,9 +3406,9 @@
    <widget class="QLabel" name="label_6">
     <property name="geometry">
      <rect>
-      <x>630</x>
-      <y>220</y>
-      <width>151</width>
+      <x>680</x>
+      <y>280</y>
+      <width>61</width>
       <height>31</height>
      </rect>
     </property>
@@ -3612,7 +3612,7 @@
      </palette>
     </property>
     <property name="text">
-     <string>Сравнение методов :</string>
+     <string>Время:</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton">
@@ -3831,7 +3831,7 @@
     <property name="geometry">
      <rect>
       <x>70</x>
-      <y>380</y>
+      <y>370</y>
       <width>89</width>
       <height>25</height>
      </rect>

@@ -37,7 +37,10 @@ HEADERS += \
     LU_decomposition.h \
     Matrix_generator.h \
     Simple_iterations.h \
-    SLAE.h
+    SLAE.h \
+    successive_over_relaxation.h \
+    yakobi.h \
+    SOR.h
 
 FORMS += \
         mainwindow.ui
